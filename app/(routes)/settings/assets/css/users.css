@@ -1,0 +1,11 @@
+/* styling for settings */
+.tableFixHead {
+    overflow: auto;
+    height: 30rem;
+}
+
+.tableFixHead thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}

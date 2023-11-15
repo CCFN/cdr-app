@@ -1,0 +1,207 @@
+.monitoring-row{
+  display: flex;
+  justify-content: space-evenly !important;
+}
+
+.monitoring-card{
+  height: 120px;
+  box-shadow: 0 2px 2px 2px lightgray;
+  border-radius: 15px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  background-color: white;
+}
+
+.monitoring-card-top{
+  display: flex;
+  justify-content: space-between;
+  height: 70px;
+  border-bottom: solid 1px red;
+  padding-bottom: 1%;
+}
+
+.treatment-card{
+  height: 120px;
+  box-shadow: 0 2px 2px 2px lightgray;
+  border-radius: 15px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  background-color: white;
+}
+
+.graph-card1{
+  height: 400px;
+  background-color: white;
+  box-shadow: 0 2px 2px 2px lightgray;
+  border-radius: 15px;
+}
+
+.indicator-name{
+  font-size: 12px;
+  opacity: 40%;
+}
+.monitoring-icon{
+  height: 30px;
+  width: 30px;
+  font-size: 10px;
+  padding:2%;
+  border-radius: 50%;
+  border: solid 1px red;
+  color: red;
+}
+.yield-card-top{
+  display: flex;
+  justify-content: space-between;
+  height: 0px;
+  padding-bottom: 7%;
+}
+
+.yield-card-top-treatment{
+  display: flex;
+  justify-content: space-between;
+  height: 0px;
+  padding-bottom: 7%;
+  margin-top:11px;
+}
+
+.yield_bar{
+  
+  margin-left: 0px;
+
+  /* width: 10px; */
+  
+}
+.vl-card{
+  height: 100px;
+  width: 120px !important;
+  box-shadow: 0 2px 2px 2px lightgray;
+  border-radius: 15px;
+  margin-left: 1px !important;
+  margin-right: 1px !important;
+  margin-bottom: 20px !important;
+  margin-top: 10px !important;
+ 
+  background-color: white;
+  text-align: center;
+}
+.location-card{
+  height: 70px;
+  width: 250px;
+  box-shadow: 0 2px 2px 2px lightgray;
+  border-radius: 15px;
+  margin-left: 1px !important;
+  margin-right: 1px !important;
+  margin-bottom: 20px !important;
+  margin-top: 10px !important;
+ 
+  background-color: darkred;
+  text-align: center;
+  align-content: center;
+}
+.pie-card{
+  height: 400px;
+  width: 400px !important;
+  box-shadow: 0 2px 2px 2px lightgray;
+  border-radius: 15px;
+  margin-left: 1px !important;
+  margin-right: 1px !important;
+  margin-bottom: 10px !important;
+  margin-top: 10px !important;
+  background-color: white;
+  text-align: center;
+}
+
+.vl_upper_indicator{
+  background-color: white;
+}
+.text-right{
+  text-align: right;
+}
+
+.map{
+  width: 90%;
+}
+.table_color{
+  background-color: blue;
+  align-content: center;
+  margin-inline: 100;
+
+}
+
+
+
+.hts_text_graph{
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.by_sex_text_graph{
+  font-size: 15px;
+  font-weight: 500;
+}
+
+
+.container2 {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+  /* important part */
+  display: grid;
+  place-items: center;
+  grid-template-areas: "inner-div";
+}
+
+.inner2 {
+  height: 50px;
+  width: 50px;
+  padding-left: 0px;
+  padding-top: 12px;
+  /* important part */
+  grid-area: inner-div;
+}
+
+.inner3 {
+  height: 100px;
+  width: 110px;
+  padding: 12px;
+  /* important part */
+  grid-area: inner-div;
+}
+
+.inner4 {
+  height: 50px;
+  width: 50px;
+  padding-left: 0px;
+  padding-top: 12px;
+  /* important part */
+  grid-area: inner-div;
+}
+
+.inner5 {
+  height: 100px;
+  width: 104px;
+  padding: 12px;
+  /* important part */
+  grid-area: inner-div;
+}
+
+.inner{
+  position: absolute;
+}
+.outer {
+  display: grid;
+  grid-template: 1fr / 1fr;
+  place-items: center;
+}
+.outer > * {
+  grid-column: 1 / 1;
+  grid-row: 1 / 1;
+}
+.outer .below {
+  z-index: 1;
+  /* background-color: aqua; */
+}
+.outer .top {
+  z-index: 2;
+  /* background-color: brown; */
+}
