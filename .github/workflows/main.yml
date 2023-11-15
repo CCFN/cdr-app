@@ -1,0 +1,26 @@
+name: deploy to vps
+
+on: push
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Install Dependencies
+      run: npm install
+    
+    - name: Build
+      run: npm run build
+
+    - name: Deploy
+      uses: easingthemes/ssh-deploy@main
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+        REMOTE_HOST: 165.22.192.182
+        REMOTE_USER: root       
+        TARGET: /var/www/stateserver/
