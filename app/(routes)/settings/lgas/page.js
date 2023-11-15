@@ -11,10 +11,10 @@ const LgasPage = () => {
     const bURL = process.env.baseURL;
     const {data:session} = useSession()
     const userData = session?.user;
-    const loggeduserId = userData.id;
-    const loggeduserState = userData.state;
-    const loggeduserLga = userData.facility.lga.lgaName;
-    const loggeduserFacility = userData.facility.name;
+    const loggeduserId = userData?.id;
+    const loggeduserState = userData?.state;
+    const loggeduserLga = userData?.facility.lga.lgaName;
+    const loggeduserFacility = userData?.facility.name;
 
     // Event handler to toggle the visibility of a section
     const handleClick =( event) => {
