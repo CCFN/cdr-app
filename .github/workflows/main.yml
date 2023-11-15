@@ -23,4 +23,4 @@ jobs:
         SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
         REMOTE_HOST: 165.22.192.182
         REMOTE_USER: root       
-        TARGET: /var/www/stateserver/
+        TARGET: /var/www/stateserver
