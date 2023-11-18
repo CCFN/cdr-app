@@ -4,7 +4,6 @@ import '../css/monitoring-style.css'
 import '../../public/vendor/bootstrap/css/bootstrap.css'
 import '../../public/vendor/fontawesome/css/all.min.css'
 import ChildLayout from './layouts/childLayout'
-import { AuthProvider } from './layouts/Provider'
 
 export const metadata = {
     title: 'Caritas PL-CDR',

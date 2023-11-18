@@ -4,11 +4,27 @@ import { useSession } from "next-auth/react";
 import axios from "axios";
 function ViewUploads() {
     const baseURL = process.env.baseURL;
-    const [statedata, setStatedata] = useState([]);
+    const [locations, setLocations] = useState([]);
     const [fadata, setFadata] = useState([]);
     const {data: session} = useSession();
     const user = session?.user;
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
+
+    function getUniqueLocations(arr, key) {
+      const map = new Map();
+      return arr.reduce((uniqueArray, obj) => {
+        const datimCodeValue = obj[key];
+        const processedValue = obj.processed;
+    
+        // Check if the object is processed and has a unique datimCode
+        if (processedValue === true && !map.has(datimCodeValue)) {
+          map.set(datimCodeValue, true);
+          uniqueArray.push(obj);
+        }
+    
+        return uniqueArray;
+      }, []);
+    }
         //---- Load all Uploads-----
     const fetchUploads = async () =>{
         setLoading(true)
@@ -16,13 +32,33 @@ function ViewUploads() {
             .then((res) => {
               setLoading(false)
               const sorted = res.data.sort((a,b) => b.createdAt < a.createdAt ? -1 : 1)
-              setFadata(sorted);
+              const uniqueLocations = getUniqueLocations(sorted, 'datimCode')
+              setFadata(uniqueLocations);
               //console.log(sorted)
             });
+    }
+
+    const fetchLocations = async () =>{
+      await axios.get(baseURL + "locations/all")
+      .then(res => {
+        const filteredLocations = res.data.filter(loc => loc.state.id !== '5ec2d6b79e427165ab7893da');
+        console.log(filteredLocations)
+        setLocations(filteredLocations)
+      })
+    }
+
+    const getStateName = (datimCode) =>{
+        const filteredLoc = locations.find(loc => loc.datimCode === datimCode);
+        return filteredLoc?.state.stateName;
+    }
+    const getFacilityName = (datimCode) =>{
+        const filteredLoc = locations.find(loc => loc.datimCode === datimCode);
+        return filteredLoc?.name;
     }
         useEffect(() => {
           
           if(user){
+            fetchLocations()
             fetchUploads()
           }
       }, [user]);
@@ -75,8 +111,8 @@ function ViewUploads() {
               }
               {fadata.map((file, index) => (
                 <tr key={index}>
-                  <td>{file.stateId}</td>
-                  <td>{file.uploadedBy.facility}</td>
+                  <td>{getStateName(file.datimCode)}</td>
+                  <td>{getFacilityName(file.datimCode)}</td>
                   <td>{formatTimeAgo(file.createdAt)}</td>
                   <td>{file.status}</td>
                 </tr>

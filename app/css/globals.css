@@ -131,3 +131,18 @@ body{
   color: rgb(192, 32, 32);
   border-bottom: solid 1px rgb(192, 32, 32);
 }
+
+input[type=date]{
+  border: solid 1px lightgray !important;
+}
+input[type=radio]{
+  border: solid 1px lightgray !important;
+}
+
+input[type=checkbox]{
+  border: solid 1px lightgray !important;
+}
+
+.border{
+  border: solid 1px lightgray !important;
+}

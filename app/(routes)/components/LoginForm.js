@@ -50,14 +50,14 @@ const LoginForm = () => {
           <img src="/images/Login-logo.png" alt="CCFN Logo" className="logo1" />
           <form onSubmit={handleSubmit} method="POST">
             <div className="row my-3">
-              <div className="d-flex">
-                <i className="fa-solid fa-user input-border-bottom my-2 py-2 px-3"></i>
+              <div className="d-flex input-border-bottom px-1">
+                <i className="fa-solid fa-user  my-2 py-2 px-3"></i>
                 <input
                   type="text"
                   name="username"
                   required
                   onChange={(e) => setUsername(e.target.value)}
-                  className="form-control input-border-bottom rounded-0"
+                  className="form-control  rounded-0"
                   placeholder="Enter Username"
                   aria-describedby="helpId"
                 />
@@ -65,20 +65,20 @@ const LoginForm = () => {
             </div>
 
             <div className="row my-2">
-              <div className="d-flex">
-                <i className="fa-solid fa-lock input-border-bottom my-2 py-2 px-3"></i>
+              <div className="d-flex input-border-bottom px-1">
+                <i className="fa-solid fa-lock  my-2 py-2 px-3"></i>
                 <input
                   type="password"
                   name="password"
                   required
                   onChange={(e) => setPassword(e.target.value)}
-                  className="form-control input-border-bottom rounded-0"
+                  className="form-control rounded-0"
                   placeholder="Enter password"
                   aria-describedby="helpId"
                 />
               </div>
             </div>
-            <div className="row">
+            <div className="row mt-5">
               <div className="col-lg-12 text-center">
                 <button type="submit" role="button">
                   Login

@@ -55,54 +55,59 @@ function FacilityListComponent({handleFunction}) {
 
   return (
     <>
-    <div className="form-group my-3">
-        <label className="form-label fw-bold">State:</label>
-        <Select
-            name = "state"
-            options={states}
-            placeholder="select States"
-            isMulti
-            onChange={handleState}
-        />
-    </div>
-    <div className="form-group my-3">
-        <label className="form-label fw-bold">LGA:</label>
-        <Select
-            name = "lga"
-            options={filteredLGAs}
-            placeholder="select LGA"
-            isMulti
-            onChange={handleLGA}
-        />
-    </div>
-    <div className="form-group my-3">
-        <label className="form-label fw-bold">Facility:</label>
-        <Select
-            name = "lga"
-            options={filteredFacility}
-            placeholder="select facility"
-            isMulti
-            onChange={handleFacility}
-            
-        />
-    </div>
-    <div className="form-group my-3">
-        <label className="form-label fw-bold">Start Date:</label>
-        <input type="date" name="startDate" className="form-control" max={today} 
-             onChange={(e) => setStartDate(e.target.value)}
-        />
-    </div>
-    <div className="form-group my-3">
-        <label className="form-label fw-bold">End Date:</label>
-        <input type="date" name="endDate" className="form-control" max={today}
-             onChange={(e) => setEndDate(e.target.value)}
-            />
-    </div>
+    <form method="post" onSubmit={handleFunction}>
 
-    <div className="form-group my-3">
-      
-      <Button text="Load Data" onClick={handleFunction} />
-    </div>
+        <div className="form-group my-3">
+            <label className="form-label fw-bold">State:</label>
+            <Select
+                name = "state"
+                options={states}
+                placeholder="select States"
+                isMulti
+                onChange={handleState}
+            />
+        </div>
+        <div className="form-group my-3">
+            <label className="form-label fw-bold">LGA:</label>
+            <Select
+                name = "lga"
+                options={filteredLGAs}
+                placeholder="select LGA"
+                isMulti
+                onChange={handleLGA}
+            />
+        </div>
+        <div className="form-group my-3">
+            <label className="form-label fw-bold">Facility:</label>
+            <Select
+                name = "lga"
+                options={filteredFacility}
+                placeholder="select facility"
+                isMulti
+                onChange={handleFacility}
+                
+            />
+        </div>
+        <div className="form-group my-3">
+            <label className="form-label fw-bold">Start Date:</label>
+            <input type="date" name="startDate" className="form-control" max={today} 
+                onChange={(e) => setStartDate(e.target.value)}
+                required
+            />
+        </div>
+        <div className="form-group my-3">
+            <label className="form-label fw-bold">End Date:</label>
+            <input type="date" name="endDate" className="form-control" max={today}
+                onChange={(e) => setEndDate(e.target.value)}
+                required
+                />
+        </div>
+
+        <div className="form-group my-3">
+        
+        <Button text="Load Data" type="submit" />
+        </div>
+    </form>
     
     </>
   )

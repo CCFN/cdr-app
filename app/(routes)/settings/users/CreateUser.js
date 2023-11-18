@@ -12,7 +12,7 @@ const CreateUser = ({ handleClick }) => {
     const [apiLgas, setApiLgas] = useState([]);
     const [selectedState, setSelectedState] = useState('');
     const [states, setStates] = useState([]);
-    const [facility, setFacility] = useState([])
+    //const [facility, setFacility] = useState([])
     const { data: session } = useSession();
     const user = session?.user;
     // New state for the selected facility
@@ -26,7 +26,7 @@ const CreateUser = ({ handleClick }) => {
                 axios.get(`${baseURL}state/`)
                 .then(res =>{
                     setStates(res.data);
-                    console.log(res.data)
+                    //console.log(res.data)
                 })
             
         } catch (error) {
@@ -34,24 +34,23 @@ const CreateUser = ({ handleClick }) => {
         }
 
     }
+    const fetchLocations = async () => {
+            try {
+                const response = await axios.get(`${baseURL}locations/all`);
+                setApiLocations(response.data);
+            } catch (error) {
+                console.error('Error fetching locations:', error);
+            }
+        };
 
     // Fetch locations from the API using useEffect
     useEffect(() => {
-        // const fetchLocations = async () => {
-        //     try {
-        //         const response = await axios.get(`${bURL}locations/all`);
-        //         setApiLocations(response.data);
-        //     } catch (error) {
-        //         console.error('Error fetching locations:', error);
-        //     }
-        // };
-        // fetchLocations();
-        if(user){
+        // 
+        fetchStates();
+        fetchLocations();
 
-            fetchStates();
-        }
        
-    }, [user]);
+    }, []);
 
     // Options for user roles in a dropdown menu. remember to fetch this from the api
     const roleOptions = [
@@ -99,6 +98,8 @@ const CreateUser = ({ handleClick }) => {
         const fullName = e.target.fullName.value;
         const email = e.target.email.value;
         const password = e.target.password.value;
+        const state = e.target.state.value;
+        const facility = e.target.facility.value;
 
         // Finding the selected state object from the API data
        // const selectedStateObject = apiLocations.find(item => item.state.id === selectedState);
@@ -107,12 +108,12 @@ const CreateUser = ({ handleClick }) => {
         const createdUser = {
             "email": email,
             "enabled": true,
-            "facility": selectedStateObject.id,
+            "facility": facility,
             "fullName": fullName,
             "password": password,
             "role": [],
             "roles": selectedRoles,
-            "state": selectedStateObject.state.id,
+            "state": state,
             "username": username
         };
 
@@ -120,7 +121,7 @@ const CreateUser = ({ handleClick }) => {
 
         try {
             // Sending the new user data to the API for user creation
-            await axios.post(bURL + 'auth/signup', createdUser);
+            await axios.post(baseURL + 'auth/signup', createdUser);
             window.alert('New user has been created');
             // window.location.reload(); // there should be a better way to reload the page
             console.log(createdUser);
@@ -128,14 +129,6 @@ const CreateUser = ({ handleClick }) => {
             console.error('Error creating user:', error);
             window.alert(`${error.code} (${error.message}) (${error.response?.data?.message})`);
         }
-    };
-
-    // Mapping of state IDs to their corresponding abbreviations
-    const stateAbbreviations = {
-        "61af6942d5cf1f7ad97f559a": "Abia",
-        "5ec2d6459e427165ab7893d8": "Enugu",
-        "5ec2d6ca9e427165ab7893db": "Imo",
-        // Add other state abbreviations and their full names here, caritas is currently in 3 states now (august 2023)
     };
 
     // The JSX code for the user creation form
@@ -169,16 +162,15 @@ const CreateUser = ({ handleClick }) => {
                                 {/* State selection */}
                                 <div className="col-xs-12 col-sm-12 col-md-12 col-lg-6 mb-3">
                                     <label className="form-label fw-bold text-capitalize mb-0" htmlFor="stateInput">State Name</label>
-                                    <select className="form-control border border-dark shadow-none" name="state"  onChange={handleInputChange}>
+                                    <select className="form-control border border-dark shadow-none" name="state"  onChange={handleInputChange} required>
                                         <option value="">Select State</option>
                                         {
                                             //states.length > 0 ? 
-                                            states.map((state, index) =>{
+                                            states.map((state, index) =>
                                                 <option key={index} value={state.id}>{state.stateName}</option>
-                                            })
+                                            )
                                             //: <option>No States loaded</option>
                                         }
-                                        {/* Add other state options */}
                                     </select>
                                 </div>
     
@@ -198,23 +190,14 @@ const CreateUser = ({ handleClick }) => {
                                 {/* Facility selection */}
                                 <div className="col-xs-12 col-sm-12 col-md-12 col-lg-6 mb-3">
                                     <label className="form-label fw-bold text-capitalize mb-0" htmlFor="facilityInput">Facility Name</label>
-                                    <Select
-                                        className=""
-                                        name="facility"
-                                        id="facilityInput"
-                                        options={apiLocations.filter(
-                                            (location) => location.state.id === selectedState
-                                        )}
-                                        onChange={(selectedOption) => {
-                                            setSelectedFacility(selectedOption); // Update the selected facility
-                                            setSelectedState(selectedOption ? selectedOption.state.id : ""); // Update the selected state if needed
-                                        }}
-                                        value={selectedFacility}
-                                        getOptionLabel={(option) => option.name}
-                                        getOptionValue={(option) => option.id}
-                                        placeholder="Select facility Id"
-                                    />
-    
+                                    <select className="form-control border border-dark shadow-none" name="facility"  onChange={handleInputChange}>
+                                        <option value="" defaultValue>Select Facility</option>
+                                        {
+                                            apiLocations.filter(location => location.state.id === selectedState).map((loc, index) =>
+                                            <option key={index} value={loc.id}>{loc.name}</option>
+                                            )
+                                        }
+                                    </select>
                                 </div>
     
                                 {/* User role selection */}

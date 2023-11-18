@@ -78,12 +78,7 @@ function Reporting() {
 //         getFilteredLGAs();
 //     },[selectedState]);
 //Function to download the file
-
-    useEffect(() =>{
-        fetchStateAndFacilityList();
-    },[user?.roles.includes("ROLE_SUPER_ADMIN")])
     
-
 async function fetchStateAndFacilityList(){
     try {
         const state_list_request = axios.get(`${url}state/`);
@@ -99,7 +94,9 @@ async function fetchStateAndFacilityList(){
     
 }
 
-
+useEffect(() =>{
+    fetchStateAndFacilityList();
+},[user?.roles.includes("ROLE_ADMIN")]);
 
 
 const filterFacility = (e) =>{
@@ -118,6 +115,31 @@ const exportData = (data, fileName, type) => {
     window.URL.revokeObjectURL(url);
   };
 
+  const validateForm = () => {
+    // Get references to your form elements
+    const linelist = document.querySelector('select[name="linelist"]');
+    const state = document.querySelector('select[name="state"]');
+    const facility = document.querySelector('select[name="facility"]');
+    const rangeType = document.querySelector('input[name="range_type"]:checked');
+    const startDate = document.querySelector('input[name="startDate"]');
+    const endDate = document.querySelector('input[name="endDate"]');
+  
+    // Check if all fields are filled
+    if (
+      linelist.value &&
+      state.value &&
+      rangeType &&
+      (rangeType.value === 'byDate' || (rangeType.value === 'byRange')) &&
+      endDate.value
+    ) {
+      // All fields are filled
+      return true;
+    } else {
+      // Some fields are missing
+      alert('Please fill in all required fields.');
+      return false;
+    }
+  };
 function getLineListByDateRange(e){
     e.preventDefault();
     const lineListFilters = {
@@ -152,7 +174,7 @@ function getLineListByDateRange(e){
             .then((response) =>{
                 const csvData = Papa.unparse(response.data);
                 setLoading(false)
-                exportData(csvData, `CDR_${linelist}_linelist_${today}`, 'text/csv;charset=utf-8;');
+                exportData(csvData, `StateServer_${linelist}_Patient_Linelist_${new Date().toISOString().replace(/[-T:.Z]/g, '_')}`, 'text/csv;charset=utf-8;');
             })
             .catch((error) => {
                 console.log(error)
@@ -178,6 +200,7 @@ function getLineListByDateRange(e){
 }
 function getLinelistByEndDate(e){
     e.preventDefault();
+    validateForm()
     const lineListFilters = {
         state: selectedState,
         facility: +selectedFacility,
@@ -185,6 +208,10 @@ function getLinelistByEndDate(e){
         dateTo: endDate,
         decrypt: isDecrypt,
         isCSV: isCSV,
+    }
+    if(lineListFilters.state === ''){
+        alert("You Must Select a State!");
+        return false;
     }
 
     switch (linelist) {
@@ -210,7 +237,7 @@ function getLinelistByEndDate(e){
             .then((response) =>{
                 const csvData = Papa.unparse(response.data);
                 setLoading(false)
-                exportData(csvData, `CDR_${linelist}_linelist_${startDate}_to_${endDate}`, 'text/csv;charset=utf-8;');
+                exportData(csvData, `StateServer_Patient_Linelist_${new Date().toISOString().replace(/[-T:.Z]/g, '_').replace(/_/g, '-')}`, 'text/csv;charset=utf-8;');
             })
             //console.log(lineListFilters)
             break;
@@ -270,10 +297,11 @@ function getLinelistByEndDate(e){
                                 isMulti
                                 onChange={handleState}
                             /> */}
-                            <select name="state" className="form-select"
+                            <select name="state" className="form-select" required
                                 onChange={(e) => {setSelectedState(e.target.value); filterFacility(e)}}>
+                                <option></option>
                                 {
-                                    user?.roles.includes("ROLE_SUPER_ADMIN") ?
+                                    ["ROLE_SUPER_ADMIN"].some(role => user?.roles.includes(role)) ?
                                     stateList.map((state, index) =>
                                     <>
                                         <option key={index} value={state.id}>{state.stateName}</option>
@@ -298,7 +326,7 @@ function getLinelistByEndDate(e){
                                 onChange={(e) => setSelectedFacility(e.target.value)}>
                                     <option></option>
                                     {
-                                        user?.roles.includes("ROLE_SUPER_ADMIN") ?
+                                        ["ROLE_SUPER_ADMIN", "ROLE_ADMIN"].some(role => user?.roles.includes(role)) ?
                                         filteredFacilityList.map((facility, index) =>
                                             <option key={index} value={facility.id}>{facility.name}</option>
                                             )
@@ -352,16 +380,14 @@ function getLinelistByEndDate(e){
                         <div className="col-md-4 form-group my-3">
                             <label className="form-label fw-bold">End Date:</label>
                             <input type="date" name="endDate" className="form-control" max={today}
-                                onChange={(e) => setEndDate(e.target.value)} 
+                                onChange={(e) => setEndDate(e.target.value)} required
                             />
                         </div>
                         
                     </div>
                     <div className="row">
                     {
-                            user?.roles.includes("ROLE_ADMIN") ? 
-                        
-                        <>
+                        ['ROLE_ADMIN', 'ROLE_MEA'].some(role => user?.roles.includes(role)) && 
                         <div className="col-md-2 col-xs-6 form-group my-3">
                             <label className="form-label fw-bold">Options: </label>
                             <div className="form-check">
@@ -371,7 +397,6 @@ function getLinelistByEndDate(e){
                                 <label className="form-label fw-bold" htmlFor="isDecrypt"> Decrypt</label>
                             </div>
                         </div>
-                        </>:null
                         }
                         <div className="col-md-2 col-xs-6 form-group my-3">
                             <label className="form-label fw-bold">Format: </label>

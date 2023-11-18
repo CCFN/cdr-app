@@ -122,9 +122,9 @@ export default function Home() {
               <DashboardCard 
                 iconName="fa-solid fa-children"
                 upper_indicator="Total OVC Served"
-                upper_value={data.vc_PENDING}
+                upper_value={data.ovc_PENDING}
                 lower_indicator="% OVC on ART"
-                lower_value={data.vc_PENDING}
+                lower_value={data.ovc_PENDING}
               />
               
             </div>
