@@ -7,7 +7,7 @@ export const authOptions = {
             name: "credentials",
             credentials: {},
             async authorize(credentials){
-                const response = await fetch(`http://stateserver.org:8080/cdr/api/auth/signin`,{
+                const response = await fetch(`${process.env.baseURL}auth/signin`,{
                     method: 'POST',
                     body: JSON.stringify(credentials),
                     headers: {
